@@ -1,13 +1,13 @@
 #include <stdlib.h>
 #include <GL/glut.h>
 #include "Game.h"
+#include "FpsTimer.h"
 
 //create game object
 Game *game = new Game();
 
 void renderScene() {
     game->render();
-    glutSwapBuffers();
 }
 
 

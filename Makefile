@@ -3,7 +3,7 @@ OBJDIR=obj
 vpath %.cpp src
 vpath %.h src
 
-objects= $(addprefix $(OBJDIR)/, main.o Game.o )
+objects= $(addprefix $(OBJDIR)/, main.o Game.o FpsTimer.o )
 
 
 wyrocznia: $(objects)

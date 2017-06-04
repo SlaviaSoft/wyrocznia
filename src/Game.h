@@ -2,6 +2,11 @@
 #include <GL/glut.h>
 #include <iostream>
 #include <string.h>
+#include <time.h>
+#include <math.h>
+#include "FpsTimer.h"
+
+#define MAX_FPS 100
 
 //usful class
 class Vector3f
@@ -19,13 +24,22 @@ public:
 class Game
 {
 public:
+  //this variable control blinking of cursor in user console input
+  float blinkTextCursor;
+  int fps;
+  int drawStartTime, drawEndTime, delayToNextFrame;
+
   Game();
   void init();
   void render();
 
-  void printText(std::string text,Vector3f color);
-  void drawConsole();
+  FpsTimer* fpsTimer;
 
+  static void timer(int flag);
+
+  void printText(std::string text,Vector3f color, Vector3f position);
+  void drawConsole();
+  void consoleInput();
 
   //callbacks
   static void keybord(unsigned char key, int x, int y);
