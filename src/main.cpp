@@ -1,10 +1,19 @@
+#include "FpsTimer.h"
 #include <stdlib.h>
+#include <GL/gl.h>
 #include <GL/glut.h>
 #include "Game.h"
-#include "FpsTimer.h"
+#include "Console.h"
+#include <iostream>
+
+ #ifdef _WIN32
+   #include<windows.h>
+ #endif
 
 //create game object
 Game *game = new Game();
+
+Console *console = new Console();
 
 void renderScene() {
     game->render();
@@ -25,6 +34,7 @@ int main(int argc, char **argv) {
   // register callbacks
 	glutDisplayFunc(renderScene);
 	glutKeyboardFunc(Game::keybord);
+	glutSpecialFunc(Game::keySpecial);
 
   // enter GLUT event processing cycle
 	glutMainLoop();

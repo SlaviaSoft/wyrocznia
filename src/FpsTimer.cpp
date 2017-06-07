@@ -29,7 +29,7 @@ char *FpsTimer::getFps(){
 
     if(framesToUpdate <= 0) {
         averageFps = 0;
-        for(int i = 0; i < lastFrameTimes->size(); i++) {
+        for(unsigned int i = 0; i < lastFrameTimes->size(); i++) {
             averageFps += lastFrameTimes->at(i);
         }
         averageFps /= lastFrameTimes->size();

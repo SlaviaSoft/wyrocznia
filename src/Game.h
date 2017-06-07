@@ -1,10 +1,17 @@
+#pragma once
 #include <stdlib.h>
+#include <GL/gl.h>
 #include <GL/glut.h>
 #include <iostream>
 #include <string.h>
 #include <time.h>
 #include <math.h>
 #include "FpsTimer.h"
+#include "Console.h"
+
+#ifdef _WIN32
+  #include<windows.h>
+#endif
 
 #define MAX_FPS 100
 
@@ -19,7 +26,7 @@ public:
     z=z1;
   };
 };
-
+//
 //main game class
 class Game
 {
@@ -43,4 +50,5 @@ public:
 
   //callbacks
   static void keybord(unsigned char key, int x, int y);
+    static void keySpecial (int key, int x, int y);
 };
