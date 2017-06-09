@@ -3,11 +3,11 @@ OBJDIR=obj
 vpath %.cpp src
 vpath %.h src
 
-objects= $(addprefix $(OBJDIR)/, main.o Game.o FpsTimer.o Console.o )
+objects= $(addprefix $(OBJDIR)/, main.o Game.o Console.o )
 
 
 wyrocznia: $(objects)
-	g++ -o wyrocznia $(objects) -lGL -lglut -lGLEW
+	g++ -o wyrocznia $(objects) -lsfml-graphics -lsfml-window -lsfml-system
 
 
 $(OBJDIR)/%.o: %.cpp

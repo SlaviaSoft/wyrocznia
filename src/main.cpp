@@ -1,43 +1,50 @@
-#include "FpsTimer.h"
 #include <stdlib.h>
-#include <GL/gl.h>
-#include <GL/glut.h>
 #include "Game.h"
 #include "Console.h"
 #include <iostream>
+#include <SFML/Graphics.hpp>
 
  #ifdef _WIN32
    #include<windows.h>
  #endif
 
-//create game object
-Game *game = new Game();
+Game *game;
 
 Console *console = new Console();
 
-void renderScene() {
-    game->render();
-}
+int main()
+{
+  game = new Game();
+
+  //GAME LOOP
+  while (game->window.isOpen())
+  {
+      sf::Event event;
+      while (game->window.pollEvent(event))
+      {
+        switch (event.type)
+          {
+            case sf::Event::Closed:
+                game->window.close();
+                break;
+            case sf::Event::TextEntered:
+                game->writeText(event.text.unicode);
+                break;
+            case sf::Event::KeyPressed:
+                game->keyPressed(event.key.code);
+            default:
+                break;
+          }
+      }
+
+      //game->calculateFPS();
+
+      game->window.clear();
+      game->render();
+      game->window.display();
 
 
-int main(int argc, char **argv) {
+  }
 
-	// init GLUT and create Window
-  glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE | GLUT_RGBA);
-	glutInitWindowPosition(200,200);
-	glutInitWindowSize(1280,720);
-	glutCreateWindow("Wyrocznia");
-
-	game->init();
-
-  // register callbacks
-	glutDisplayFunc(renderScene);
-	glutKeyboardFunc(Game::keybord);
-	glutSpecialFunc(Game::keySpecial);
-
-  // enter GLUT event processing cycle
-	glutMainLoop();
-
-	return 1;
+  return 0;
 }
