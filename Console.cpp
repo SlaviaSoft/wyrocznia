@@ -5,7 +5,7 @@ Console::Console()
     linebuffer("")
 {
     keybuffer = 0;
-    a = -1;
+    a = -1; 
 };
 
 void Console::linecreator()
