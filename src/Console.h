@@ -12,9 +12,13 @@ public:
     void linecreator();
     void up();
     void down();
+    void left();
+    void right();
+    void del();
 
     int keybuffer;
     string linebuffer;
+    string linebufferR;
 
 private:
     string letter;

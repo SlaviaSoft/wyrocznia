@@ -7,7 +7,7 @@
  #ifdef _WIN32
    #include<windows.h>
  #endif
-
+ 
 Game *game;
 
 Console *console = new Console();
