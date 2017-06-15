@@ -1,7 +1,5 @@
 #include "Game.h"
 #include "Console.h"
-#include <SFML/Window.hpp>
-#include <SFML/Graphics.hpp>
 
 extern Game*game;
 
@@ -30,7 +28,12 @@ Game::Game(){
 
   if (!arial.loadFromFile("arial.ttf"))
   {
-      std::cout<<"Can't load font"<<std::endl;
+      std::cout<<"Can't load arial font"<<std::endl;
+  }
+  obelix = new sf::Font();
+  if (!obelix->loadFromFile("obelix.ttf"))
+  {
+      std::cout<<"Can't load obelix font"<<std::endl;
   }
   inputText = new sf::Text;
   inputText->setString("|");
@@ -39,11 +42,37 @@ Game::Game(){
   inputText->setCharacterSize(30);
   inputText->setStyle(sf::Text::Regular);
 
+  //create logo letters
+  short int logoFontSize=40;
+  logo.push_back(sf::Text("w",*obelix,logoFontSize));
+  logo.push_back(sf::Text("y",*obelix,logoFontSize));
+  logo.push_back(sf::Text("r",*obelix,logoFontSize));
+  logo.push_back(sf::Text("o",*obelix,logoFontSize));
+  logo.push_back(sf::Text("c",*obelix,logoFontSize));
+  logo.push_back(sf::Text("z",*obelix,logoFontSize));
+  logo.push_back(sf::Text("n",*obelix,logoFontSize));
+  logo.push_back(sf::Text("i",*obelix,logoFontSize));
+  logo.push_back(sf::Text("a",*obelix,logoFontSize));
+  for(int i=0;i<9;i++)
+  {
+    logo[i].setPosition(400+50*i,-40);
+    logo[i].setColor(sf::Color(255,255,255,0));
+    logo[i].setOrigin(logo[i].getGlobalBounds().width/2,logo[i].getGlobalBounds().height/2);
+  }
+
+  //set fadeRect
+  fadeRect = new sf::RectangleShape(sf::Vector2f(WIDTH,HEIGHT));
+  fadeRect->setFillColor(sf::Color(0,0,0,255));
+
   //restart clocks
   blinkingCursorClock.restart();
+  LogoClock.restart();
+  fadeClock.restart();
 
   //set other variables values
   fps=0;
+  ifDisplayLogo = true;
+  ifFadeIn = true;
 };
 
 
@@ -65,19 +94,21 @@ void Game::keyPressed(sf::Keyboard::Key key)
     switch(key)
     {
         case sf::Keyboard::Up:
-        console->up();
+          console->up();
         break;
         case sf::Keyboard::Down:
-        console->down();
+          console->down();
         break;
         case sf::Keyboard::Left:
-        console->left();
+          console->left();
         break;
         case sf::Keyboard::Right:
-        console->right();
+          console->right();
         case sf::Keyboard::Delete:
-        console->del();
+          console->del();
         break;
+        case sf::Keyboard::Escape:
+          window.close();
     }
 
 }
@@ -90,8 +121,19 @@ void Game::render(){
   window.draw(*consoleInputShape);
   window.draw(*inputText);
 
+  for(int i=0;i<logo.size();i++)
+    window.draw(logo[i]);
+
+
+  if(ifDisplayLogo==true)
+    displayLogo();
+
+  if(ifFadeIn==true)
+    fadeIn();
+
   consoleInput();
 
+  window.draw(*fadeRect);
 }
 
 //..............................................................................
@@ -128,6 +170,61 @@ void Game::setBgImage(std::string imgName)
   {
     std::cout<<"Can't load bg img"<<std::endl;
   }
+}
+
+//..............................................................................
+
+void Game::displayLogo()
+{
+  for(int i=0;i<9;i++)
+  {
+    int logoTime = LogoClock.getElapsedTime().asMilliseconds();
+    if(logoTime>1000 && logo[i].getPosition().y < 300 && logoTime<5000)
+    {
+      logo[i].move(0, logoTime/((i+1)*300));
+    }
+    if((logoTime*logoTime)/60000 < 255)
+      logo[i].setColor(sf::Color(255,255,255,(logoTime*logoTime)/60000));
+
+    if(logoTime>5000)
+    {
+      logo[i].rotate(logoTime/5000);
+      logo[i].setCharacterSize(40*5000*5000/(logoTime*logoTime));
+      if(i==0)
+          logo[i].move(-1.3,-0.5);
+      if(i==1)
+          logo[i].move(-0.3,-0.9);
+      if(i==2)
+          logo[i].move(-0.8,0.3);
+      if(i==3)
+          logo[i].move(0.9,0.6);
+      if(i==4)
+          logo[i].move(0.9,-0.9);
+      if(i==5)
+          logo[i].move(0.7,1);
+      if(i==6)
+          logo[i].move(-0.7,-1.2);
+      if(i==7)
+          logo[i].move(1.3,-0.5);
+      if(i==8)
+          logo[i].move(0.3,-0.7);
+
+    }
+    if(logoTime>8000)
+      ifDisplayLogo = false;
+
+
+  }
+}
+
+//..............................................................................
+
+void Game::fadeIn()
+{
+  int alpha = fadeClock.getElapsedTime().asMilliseconds()/5;
+  fadeRect->setFillColor(sf::Color(0,0,0,255 - alpha));
+  if(alpha>250)
+    ifFadeIn=false;
 }
 
 //..............................................................................
