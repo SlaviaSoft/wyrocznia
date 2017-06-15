@@ -1,6 +1,4 @@
 #include "Console.h"
-#include <iostream>
-
 
 Console::Console()
 :
@@ -32,8 +30,9 @@ void Console::linecreator()
         {
             history[i] = history[i-1];
         }
-        history[0] = linebuffer;
+        history[0] = linebuffer + linebufferR;
         linebuffer = "";
+        linebufferR = "";
         keybuffer = 0;
         a = -1;
     }
@@ -58,3 +57,37 @@ void Console::down()
     }
 };
 
+void Console::left()
+{
+    if(linebuffer.size()>0)
+    {
+        linebufferR = linebuffer[linebuffer.size()-1] + linebufferR;
+        linebuffer.resize(linebuffer.size()-1);
+    }
+
+};
+
+void Console::right()
+{
+    if(linebufferR.size()>0)
+    {
+        linebuffer = linebuffer + linebufferR[0];
+        for(int i=0; i<linebufferR.size(); i++)
+        {
+            linebufferR[i] = linebufferR[i+1];
+        }
+        linebufferR.resize(linebufferR.size()-1);
+    }
+};
+
+void Console::del()
+{
+    if (linebufferR.size() > 0)
+    {
+        for(int i=0; i<linebufferR.size(); i++)
+        {
+            linebufferR[i] = linebufferR[i+1];
+        }
+        linebufferR.resize(linebufferR.size()-1);
+    }
+};
