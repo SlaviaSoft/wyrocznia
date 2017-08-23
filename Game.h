@@ -29,6 +29,8 @@ private:
   bool ifFadeIn;
 public:
   int fps;
+  int scene;
+  int displayTextLine;
 
   sf::RenderWindow window;
 
@@ -36,6 +38,7 @@ public:
   sf::Clock blinkingCursorClock;
   sf::Clock LogoClock;
   sf::Clock fadeClock;
+  sf::Clock displayTextClock;
 
   sf::Time FPStime;
 
@@ -49,6 +52,7 @@ public:
   sf::Font* obelix;
 
   sf::Text* inputText;
+  sf::Text* mainText;
   //wyrocznia logo
   std::vector<sf::Text> logo;
 
@@ -64,6 +68,7 @@ public:
   void calculateFPS();
   void writeText(int key);
   void keyPressed(sf::Keyboard::Key key);
+  void displayText(std::string text, int speed, int end);
 
 
 };

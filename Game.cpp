@@ -7,9 +7,14 @@ extern Console*console;
 
 Game::Game(){
   window.create(sf::VideoMode(WIDTH,HEIGHT), "Wyrocznia");
+  scene = 0;
 
+
+
+  if(scene==0)
+  {
   //set bg
-  setBgImage("test.jpg");
+  setBgImage("test.png");
   bgImg.setTexture(bgImgTexture);
   bgImg.setTextureRect(sf::IntRect(0,0,WIDTH,HEIGHT));
 
@@ -60,6 +65,12 @@ Game::Game(){
     logo[i].setOrigin(logo[i].getGlobalBounds().width/2,logo[i].getGlobalBounds().height/2);
   }
 
+  mainText = new sf::Text;
+  mainText->setPosition(sf::Vector2f(WIDTH*0.07,HEIGHT*0.11));
+  mainText->setFont(arial);
+  mainText->setCharacterSize(30);
+  mainText->setStyle(sf::Text::Regular);
+
   //set fadeRect
   fadeRect = new sf::RectangleShape(sf::Vector2f(WIDTH,HEIGHT));
   fadeRect->setFillColor(sf::Color(0,0,0,255));
@@ -73,7 +84,11 @@ Game::Game(){
   fps=0;
   ifDisplayLogo = true;
   ifFadeIn = true;
-};
+  displayTextLine=0;
+    }
+
+
+}
 
 
 //..............................................................................
@@ -120,6 +135,7 @@ void Game::render(){
   window.draw(*consoleShape);
   window.draw(*consoleInputShape);
   window.draw(*inputText);
+  window.draw(*mainText);
 
   for(int i=0;i<logo.size();i++)
     window.draw(logo[i]);
@@ -130,6 +146,11 @@ void Game::render(){
 
   if(ifFadeIn==true)
     fadeIn();
+
+  if(scene==1)
+  {
+    displayText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",170, WIDTH*0.4);
+  }
 
   consoleInput();
 
@@ -210,8 +231,12 @@ void Game::displayLogo()
           logo[i].move(0.3,-0.7);
 
     }
-    if(logoTime>8000)
-      ifDisplayLogo = false;
+    if(logoTime>8000){
+        scene=1;
+        displayTextClock.restart();
+        ifDisplayLogo = false;
+    }
+
 
 
   }
@@ -228,3 +253,29 @@ void Game::fadeIn()
 }
 
 //..............................................................................
+
+void Game::displayText(std::string text, int speed, int end)
+{
+  for(int i=0;i<text.length();i++){
+    if(displayTextClock.getElapsedTime().asMilliseconds()<speed*i){
+      if(displayTextLine==0)
+      {
+        std::cout<<i<<std::endl;
+        //std::string main0 = mainText->getString().toAnsiString();
+        //if(mainText->getLocalBounds().width < end+1000)
+        //{
+          mainText->setString(text.substr(0,i)+'_');
+        //}
+        /*else if((text[i]==' ')==0)
+        {
+          mainText->setString(text.substr(0,i)+'_');
+        }else{
+          mainText->setString(text.substr(0,i));
+          displayTextLine++;
+        }*/
+      }
+      break;
+    }
+  }
+
+}
