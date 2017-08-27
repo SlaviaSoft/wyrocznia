@@ -20,7 +20,8 @@
 
 #define MAX_FPS 100
 
-
+//Najważniejszy nie jest cel lecz droga do niego
+//omphalos
 //main game class
 class Game
 {
@@ -31,6 +32,7 @@ public:
   int fps;
   int scene;
   int displayTextLine;
+  std::string command;
 
   sf::RenderWindow window;
 
@@ -43,7 +45,7 @@ public:
   sf::Time FPStime;
 
   sf::RectangleShape* consoleShape;
-  sf::RectangleShape* consoleInputShape;
+  //sf::RectangleShape* consoleInputShape;
   sf::RectangleShape* fadeRect;
   sf::Sprite bgImg;
   sf::Texture bgImgTexture;
@@ -69,6 +71,7 @@ public:
   void writeText(int key);
   void keyPressed(sf::Keyboard::Key key);
   void displayText(std::string text, int speed, int end);
+  void executor(std::string command,int mode);
 
 
 };

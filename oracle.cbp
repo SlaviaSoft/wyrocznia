@@ -47,10 +47,14 @@
 		</Linker>
 		<Unit filename="Console.cpp" />
 		<Unit filename="Console.h" />
-		<Unit filename="FpsTimer.cpp" />
-		<Unit filename="FpsTimer.h" />
 		<Unit filename="Game.cpp" />
 		<Unit filename="Game.h" />
+		<Unit filename="Menu.cpp">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
+		<Unit filename="Menu.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="main.cpp" />
 		<Extensions>
 			<code_completion />

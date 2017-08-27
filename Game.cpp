@@ -9,8 +9,6 @@ Game::Game(){
   window.create(sf::VideoMode(WIDTH,HEIGHT), "Wyrocznia");
   scene = 0;
 
-
-
   if(scene==0)
   {
   //set bg
@@ -25,9 +23,9 @@ Game::Game(){
   consoleShape->setPosition(sf::Vector2f(WIDTH*0.07,HEIGHT*0.07));
 
   //set console input rectangle
-  consoleInputShape = new sf::RectangleShape((sf::Vector2f(WIDTH*0.86,HEIGHT*0.06)));
-  consoleInputShape->setFillColor(sf::Color(50, 50, 50));
-  consoleInputShape->setPosition(sf::Vector2f(WIDTH*0.07,HEIGHT*0.87));
+  console->consoleInputShape = new sf::RectangleShape((sf::Vector2f(WIDTH*0.86,HEIGHT*0.06)));
+  console->consoleInputShape->setFillColor(sf::Color(50, 50, 50));
+  console->consoleInputShape->setPosition(sf::Vector2f(WIDTH*0.07,HEIGHT*0.87));
 
   //set console input text and font
 
@@ -133,8 +131,13 @@ void Game::keyPressed(sf::Keyboard::Key key)
 void Game::render(){
   window.draw(bgImg);
   window.draw(*consoleShape);
-  window.draw(*consoleInputShape);
-  window.draw(*inputText);
+
+  if(console->isActive == true){
+    window.draw(*console->consoleInputShape);
+    window.draw(*inputText);
+  }
+
+
   window.draw(*mainText);
 
   for(int i=0;i<logo.size();i++)
@@ -147,10 +150,15 @@ void Game::render(){
   if(ifFadeIn==true)
     fadeIn();
 
-  if(scene==1)
+  if(command != "")
+    displayText(command,70,1000);
+
+  if(scene==2)
   {
-    displayText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",170, WIDTH*0.4);
+    //displayText("Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",70, WIDTH*0.4);
   }
+
+
 
   consoleInput();
 
@@ -232,7 +240,7 @@ void Game::displayLogo()
 
     }
     if(logoTime>8000){
-        scene=1;
+        scene=2;
         displayTextClock.restart();
         ifDisplayLogo = false;
     }
@@ -260,11 +268,10 @@ void Game::displayText(std::string text, int speed, int end)
     if(displayTextClock.getElapsedTime().asMilliseconds()<speed*i){
       if(displayTextLine==0)
       {
-        std::cout<<i<<std::endl;
         //std::string main0 = mainText->getString().toAnsiString();
         //if(mainText->getLocalBounds().width < end+1000)
         //{
-          mainText->setString(text.substr(0,i)+'_');
+          mainText->setString(text.substr(0,i+1)+'_');
         //}
         /*else if((text[i]==' ')==0)
         {
@@ -277,5 +284,12 @@ void Game::displayText(std::string text, int speed, int end)
       break;
     }
   }
+}
 
+//..............................................................................
+
+void Game::executor(std::string command,int mode)
+{
+    this->command = command;
+    displayTextClock.restart();
 }

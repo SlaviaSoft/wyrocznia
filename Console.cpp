@@ -1,11 +1,15 @@
 #include "Console.h"
+#include "Game.h"
+
+extern Game*game;
 
 Console::Console()
 :
     linebuffer("")
 {
     keybuffer = 0;
-    a = -1; 
+    a = -1;
+    isActive = true;
 };
 
 void Console::linecreator()
@@ -24,13 +28,16 @@ void Console::linecreator()
         keybuffer = 0;
     }
 
-    if (keybuffer == 13)
+    if (keybuffer == 13 && (linebuffer != "" || linebufferR != ""))
     {
         for(int i=9; i>0; i--)
         {
             history[i] = history[i-1];
         }
+
         history[0] = linebuffer + linebufferR;
+        command = history[0];
+        game->executor(command,0);
         linebuffer = "";
         linebufferR = "";
         keybuffer = 0;
@@ -72,11 +79,11 @@ void Console::right()
     if(linebufferR.size()>0)
     {
         linebuffer = linebuffer + linebufferR[0];
-        for(int i=0; i<linebufferR.size(); i++)
-        {
-            linebufferR[i] = linebufferR[i+1];
-        }
-        linebufferR.resize(linebufferR.size()-1);
+        //for(int i=0; i<linebufferR.size(); i++)
+        //{
+        //    linebufferR[i] = linebufferR[i+1];
+        //}
+        //linebufferR.resize(linebufferR.size()-1);
     }
 };
 

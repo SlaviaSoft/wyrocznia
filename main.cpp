@@ -7,14 +7,18 @@
  #ifdef _WIN32
    #include<windows.h>
  #endif
- 
+
 Game *game;
 
 Console *console = new Console();
 
+
+
 int main()
 {
   game = new Game();
+
+  int scene;
 
   //GAME LOOP
   while (game->window.isOpen())
